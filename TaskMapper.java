@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class Mapper {
+class TaskMapper {
 
     private  String toJson(Task task) {
         String jsonFormat = "{\"id\": %d, \"name\": \"%s\", \"status\": \"%s\"}";

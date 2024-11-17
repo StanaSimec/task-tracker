@@ -6,14 +6,14 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
-class DataStore {
+class TaskStore {
 
     private static final String FILE_NAME = "tasks.json";
 
-    private Mapper mapper;
+    private TaskMapper mapper;
 
-    DataStore() {
-        mapper = new Mapper();
+    TaskStore() {
+        mapper = new TaskMapper();
     }
 
     List<Task> getAllTasks() {

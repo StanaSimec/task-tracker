@@ -2,10 +2,10 @@ import java.util.List;
 
 class TaskRepository {
 
-    private final DataStore store;
+    private final TaskStore store;
 
     TaskRepository() {
-        this.store = new DataStore();
+        this.store = new TaskStore();
     }
 
     int add(String name) {

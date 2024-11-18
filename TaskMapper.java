@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -6,9 +8,10 @@ import java.util.regex.Pattern;
 
 class TaskMapper {
 
-    private  String toJson(Task task) {
-        String jsonFormat = "{\"id\": %d, \"name\": \"%s\", \"status\": \"%s\"}";
-        return String.format(jsonFormat, task.getId(), task.getName(), task.getStatus().name);
+    private String toJson(Task task) {
+        String jsonFormat = "{\"id\": %d, \"name\": \"%s\", \"status\": \"%s\", \"createdAt\": \"%s\", \"updatedAt\": \"%s\"}";
+        return String.format(jsonFormat, task.getId(), task.getName(), task.getStatus().name, task.getCreatedAt(),
+                task.getUpdatedAt());
     }
 
     String toJson(List<Task> tasks) {
@@ -21,18 +24,21 @@ class TaskMapper {
     }
 
     private Optional<Task> toTask(String json) {
-        Pattern pattern = Pattern.compile("\"id\": (.+), \"name\": \"(.+)\", \"status\": \"(.+)\"");
+        Pattern pattern = Pattern.compile(
+                "\"id\": (.+), \"name\": \"(.+)\", \"status\": \"(.+)\", \"createdAt\": \"(.+)\", \"updatedAt\": \"(.+)\"");
         Matcher matcher = pattern.matcher(json);
 
-        if (!matcher.find() || matcher.groupCount() != 3) {
+        if (!matcher.find() || matcher.groupCount() != 5) {
             return Optional.empty();
         }
 
         int id = Integer.parseInt(matcher.group(1));
         String name = matcher.group(2);
-        //TODO: handle status not found
+        // TODO: handle status not found
         Status status = Status.fromName(matcher.group(3)).orElse(Status.TODO);
-        return Optional.of(new Task(id, name, status));
+        LocalDateTime createdAt = LocalDateTime.parse(matcher.group(4), DateTimeFormatter.ISO_DATE_TIME);
+        LocalDateTime updatedAt = LocalDateTime.parse(matcher.group(5), DateTimeFormatter.ISO_DATE_TIME);
+        return Optional.of(new Task(id, name, status, createdAt, updatedAt));
     }
 
     List<Task> toTasks(String json) {

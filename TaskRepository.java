@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.List;
 
 class TaskRepository {
@@ -11,7 +12,8 @@ class TaskRepository {
     int add(String name) {
         List<Task> tasks = store.getAllTasks();
         int id = tasks.size() + 1;
-        tasks.add(new Task(id, name, Status.TODO));
+        LocalDateTime now = LocalDateTime.now();
+        tasks.add(new Task(id, name, Status.TODO, now, now));
         store.save(tasks);
         return id;
     }

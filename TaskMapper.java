@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 class TaskMapper {
 
     private String toJson(Task task) {
-        String jsonFormat = "{\"id\": %d, \"name\": \"%s\", \"status\": \"%s\", \"createdAt\": \"%s\", \"updatedAt\": \"%s\"}";
-        return String.format(jsonFormat, task.getId(), task.getName(), task.getStatus().name, task.getCreatedAt(),
+        String jsonFormat = "{\"id\": %d, \"description\": \"%s\", \"status\": \"%s\", \"createdAt\": \"%s\", \"updatedAt\": \"%s\"}";
+        return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().name, task.getCreatedAt(),
                 task.getUpdatedAt());
     }
 
@@ -25,7 +25,7 @@ class TaskMapper {
 
     private Optional<Task> toTask(String json) {
         Pattern pattern = Pattern.compile(
-                "\"id\": (.+), \"name\": \"(.+)\", \"status\": \"(.+)\", \"createdAt\": \"(.+)\", \"updatedAt\": \"(.+)\"");
+                "\"id\": (.+), \"description\": \"(.+)\", \"status\": \"(.+)\", \"createdAt\": \"(.+)\", \"updatedAt\": \"(.+)\"");
         Matcher matcher = pattern.matcher(json);
 
         if (!matcher.find() || matcher.groupCount() != 5) {
@@ -33,12 +33,12 @@ class TaskMapper {
         }
 
         int id = Integer.parseInt(matcher.group(1));
-        String name = matcher.group(2);
+        String description = matcher.group(2);
         // TODO: handle status not found
-        Status status = Status.fromName(matcher.group(3)).orElse(Status.TODO);
+        Status status = Status.fromName(matcher.group(3)).orElse(null);
         LocalDateTime createdAt = LocalDateTime.parse(matcher.group(4), DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime updatedAt = LocalDateTime.parse(matcher.group(5), DateTimeFormatter.ISO_DATE_TIME);
-        return Optional.of(new Task(id, name, status, createdAt, updatedAt));
+        return Optional.of(new Task(id, description, status, createdAt, updatedAt));
     }
 
     List<Task> toTasks(String json) {

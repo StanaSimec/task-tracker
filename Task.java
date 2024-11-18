@@ -2,14 +2,14 @@ import java.time.LocalDateTime;
 
 class Task {
     private final int id;
-    private final String name;
-    private final Status status;
+    private String description;
+    private Status status;
     private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
-    Task(int id, String name, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    Task(int id, String description, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -19,12 +19,20 @@ class Task {
         return id;
     }
 
-    String getName() {
-        return name;
+    String getDescription() {
+        return description;
+    }
+
+    void setDescription(String description) {
+        this.description = description;
     }
 
     Status getStatus() {
         return status;
+    }
+
+    void setStatus(Status status) {
+        this.status = status;
     }
 
     LocalDateTime getCreatedAt() {
@@ -33,5 +41,9 @@ class Task {
 
     LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

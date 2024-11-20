@@ -6,13 +6,13 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
-class TaskStore {
+class TaskStorage {
 
     private static final String FILE_NAME = "tasks.json";
 
     private TaskMapper mapper;
 
-    TaskStore() {
+    TaskStorage() {
         mapper = new TaskMapper();
     }
 

@@ -34,7 +34,6 @@ class TaskMapper {
 
         int id = Integer.parseInt(matcher.group(1));
         String description = matcher.group(2);
-        // TODO: handle status not found
         Status status = Status.fromName(matcher.group(3)).orElse(null);
         LocalDateTime createdAt = LocalDateTime.parse(matcher.group(4), DateTimeFormatter.ISO_DATE_TIME);
         LocalDateTime updatedAt = LocalDateTime.parse(matcher.group(5), DateTimeFormatter.ISO_DATE_TIME);

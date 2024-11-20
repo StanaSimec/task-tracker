@@ -2,7 +2,7 @@ import java.util.Optional;
 
 enum Status {
     TODO("todo"),
-    IN_PROGRESS("progress"),
+    IN_PROGRESS("in-progress"),
     DONE("done");
 
     public final String name;

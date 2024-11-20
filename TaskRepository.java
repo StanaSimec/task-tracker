@@ -1,31 +1,35 @@
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 class TaskRepository {
 
-    private final TaskStore store;
+    private final TaskStorage storage;
 
     TaskRepository() {
-        this.store = new TaskStore();
+        this.storage = new TaskStorage();
     }
 
     int add(String description) {
-        List<Task> tasks = store.getAllTasks();
-        int id = tasks.size() + 1;
+        List<Task> tasks = storage.getAllTasks();
+        int maxId = tasks.stream()
+                .mapToInt(t -> t.getId())
+                .max()
+                .orElse(0);
+        int id = maxId + 1;
         LocalDateTime now = LocalDateTime.now();
         tasks.add(new Task(id, description, Status.TODO, now, now));
-        store.save(tasks);
+        storage.save(tasks);
         return id;
     }
 
     List<Task> findAll() {
-        return store.getAllTasks();
+        return storage.getAllTasks();
     }
 
     boolean delete(int id) {
-        List<Task> tasks = store.getAllTasks();
-
+        List<Task> tasks = storage.getAllTasks();
         int index = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).getId() == id)
                 .findFirst()
@@ -36,42 +40,37 @@ class TaskRepository {
         }
 
         tasks.remove(index);
-        store.save(tasks);
+        storage.save(tasks);
         return true;
     }
 
     boolean setStatus(int id, Status status) {
-        List<Task> tasks = store.getAllTasks();
+        List<Task> tasks = storage.getAllTasks();
+        Optional<Task> task = tasks.stream()
+                .filter(t -> t.getId() == id)
+                .findFirst();
 
-        int index = IntStream.range(0, tasks.size())
-                .filter(i -> tasks.get(i).getId() == id)
-                .findFirst()
-                .orElse(-1);
-
-        if (index == -1) {
+        if (task.isEmpty()) {
             return false;
         }
 
-        tasks.get(index).setStatus(status);
-        tasks.get(index).setUpdatedAt(LocalDateTime.now());
-        store.save(tasks);
+        task.get().setStatus(status);
+        storage.save(tasks);
         return true;
     }
 
     boolean setDescription(int id, String description) {
-        List<Task> tasks = store.getAllTasks();
+        List<Task> tasks = storage.getAllTasks();
+        Optional<Task> task = tasks.stream()
+                .filter(t -> t.getId() == id)
+                .findFirst();
 
-        int index = IntStream.range(0, tasks.size())
-                .filter(i -> tasks.get(i).getId() == id)
-                .findFirst()
-                .orElse(-1);
-
-        if (index == -1) {
+        if (task.isEmpty()) {
             return false;
         }
 
-        tasks.get(index).setDescription(description);
-        store.save(tasks);
+        task.get().setDescription(description);
+        storage.save(tasks);
         return true;
     }
 }

@@ -1,3 +1,5 @@
+package repository;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
@@ -10,7 +12,7 @@ class TaskStorage {
 
     private static final String FILE_NAME = "tasks.json";
 
-    private TaskMapper mapper;
+    private final TaskMapper mapper;
 
     TaskStorage() {
         mapper = new TaskMapper();

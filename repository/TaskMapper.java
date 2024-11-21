@@ -1,3 +1,5 @@
+package repository;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ class TaskMapper {
 
     private String toJson(Task task) {
         String jsonFormat = "{\"id\": %d, \"description\": \"%s\", \"status\": \"%s\", \"createdAt\": \"%s\", \"updatedAt\": \"%s\"}";
-        return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().name, task.getCreatedAt(),
+        return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().name,
+                task.getCreatedAt(),
                 task.getUpdatedAt());
     }
 

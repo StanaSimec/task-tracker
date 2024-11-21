@@ -1,13 +1,15 @@
+package repository;
+
 import java.time.LocalDateTime;
 
-class Task {
+public class Task {
     private final int id;
     private String description;
     private Status status;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    Task(int id, String description, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Task(int id, String description, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.status = status;
@@ -15,11 +17,11 @@ class Task {
         this.updatedAt = updatedAt;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
@@ -27,7 +29,7 @@ class Task {
         this.description = description;
     }
 
-    Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -35,11 +37,11 @@ class Task {
         this.status = status;
     }
 
-    LocalDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    LocalDateTime getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 

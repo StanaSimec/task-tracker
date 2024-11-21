@@ -1,17 +1,19 @@
+package repository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-class TaskRepository {
+public class TaskRepository {
 
     private final TaskStorage storage;
 
-    TaskRepository() {
+    public TaskRepository() {
         this.storage = new TaskStorage();
     }
 
-    int add(String description) {
+    public int add(String description) {
         List<Task> tasks = storage.getAllTasks();
         int maxId = tasks.stream()
                 .mapToInt(t -> t.getId())
@@ -24,11 +26,11 @@ class TaskRepository {
         return id;
     }
 
-    List<Task> findAll() {
+    public List<Task> findAll() {
         return storage.getAllTasks();
     }
 
-    boolean delete(int id) {
+    public boolean delete(int id) {
         List<Task> tasks = storage.getAllTasks();
         int index = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).getId() == id)
@@ -44,7 +46,7 @@ class TaskRepository {
         return true;
     }
 
-    boolean setStatus(int id, Status status) {
+    public boolean setStatus(int id, Status status) {
         List<Task> tasks = storage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)
@@ -59,7 +61,7 @@ class TaskRepository {
         return true;
     }
 
-    boolean setDescription(int id, String description) {
+    public boolean setDescription(int id, String description) {
         List<Task> tasks = storage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)

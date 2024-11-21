@@ -1,6 +1,8 @@
+package repository;
+
 import java.util.Optional;
 
-enum Status {
+public enum Status {
     TODO("todo"),
     IN_PROGRESS("in-progress"),
     DONE("done");
@@ -11,7 +13,7 @@ enum Status {
         this.name = name;
     }
 
-    static Optional<Status> fromName(String name) {
+    public static Optional<Status> fromName(String name) {
         for (Status status : values()) {
             if (status.name.equals(name)) {
                 return Optional.of(status);

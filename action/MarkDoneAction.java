@@ -1,11 +1,16 @@
 package action;
 
 import repository.Status;
+import repository.TaskRepository;
+import validation.IdValidator;
 
-class MarkDoneAction extends MarkStatusAction {
+public final class MarkDoneAction implements Action {
 
     @Override
-    Status getStatus() {
-        return Status.DONE;
+    public void execute(String[] args) {
+        IdValidator.validate(args);
+        int id = Integer.parseInt(args[1]);
+        boolean isUpdated = TaskRepository.setStatus(id, Status.DONE);
+        System.out.println(isUpdated ? "Task updated" : "Task not found");
     }
 }

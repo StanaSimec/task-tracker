@@ -1,20 +1,16 @@
 package action;
 
-class AddAction extends Action {
+import repository.TaskRepository;
+import validation.ValidationException;
+
+public final class AddAction implements Action {
 
     @Override
-    boolean validateArguments(String[] args) {
+    public void execute(String[] args) {
         if (args.length < 2) {
-            System.out.println("Task description not found");
-            return false;
+            throw new ValidationException("Task description is not provided");
         }
-        return true;
-    }
-
-    @Override
-    void handleAction(String[] args) {
-        int taskId = repository.add(args[1]);
+        int taskId = TaskRepository.add(args[1]);
         System.out.println("Created task with id: " + taskId);
     }
-
 }

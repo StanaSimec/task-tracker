@@ -11,7 +11,7 @@ public class TaskTracker {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Action not provided.");
         } catch (ActionNotFoundException e) {
-            System.out.println("Invalid action");
+            System.out.println(e.getMessage());
         }
     }
 }

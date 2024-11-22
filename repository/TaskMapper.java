@@ -10,14 +10,16 @@ import java.util.regex.Pattern;
 
 class TaskMapper {
 
-    private String toJson(Task task) {
+    private TaskMapper(){}
+
+    private static String toJson(Task task) {
         String jsonFormat = "{\"id\": %d, \"description\": \"%s\", \"status\": \"%s\", \"createdAt\": \"%s\", \"updatedAt\": \"%s\"}";
-        return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().name,
+        return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().value,
                 task.getCreatedAt(),
                 task.getUpdatedAt());
     }
 
-    String toJson(List<Task> tasks) {
+    static String toJson(List<Task> tasks) {
         List<String> jsons = new ArrayList<>();
         for (Task task : tasks) {
             jsons.add(toJson(task));
@@ -26,7 +28,7 @@ class TaskMapper {
         return String.format(tasksJson, String.join(", ", jsons));
     }
 
-    private Optional<Task> toTask(String json) {
+    private static Optional<Task> toTask(String json) {
         Pattern pattern = Pattern.compile(
                 "\"id\": (.+), \"description\": \"(.+)\", \"status\": \"(.+)\", \"createdAt\": \"(.+)\", \"updatedAt\": \"(.+)\"");
         Matcher matcher = pattern.matcher(json);
@@ -43,7 +45,7 @@ class TaskMapper {
         return Optional.of(new Task(id, description, status, createdAt, updatedAt));
     }
 
-    List<Task> toTasks(String json) {
+    static List<Task> toTasks(String json) {
         Pattern allTasksPattern = Pattern.compile(".+\\[(.*)\\].+");
         Matcher allTasksMatcher = allTasksPattern.matcher(json);
 
@@ -57,9 +59,7 @@ class TaskMapper {
         List<Task> tasks = new ArrayList<>();
         for (String taskData : tasksData) {
             Optional<Task> task = toTask(taskData);
-            if (task.isPresent()) {
-                tasks.add(task.get());
-            }
+            task.ifPresent(tasks::add);
         }
         return tasks;
     }

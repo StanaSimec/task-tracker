@@ -7,31 +7,27 @@ import java.util.stream.IntStream;
 
 public class TaskRepository {
 
-    private final TaskStorage storage;
+    private TaskRepository(){}
 
-    public TaskRepository() {
-        this.storage = new TaskStorage();
-    }
-
-    public int add(String description) {
-        List<Task> tasks = storage.getAllTasks();
+    public static int add(String description) {
+        List<Task> tasks = TaskStorage.getAllTasks();
         int maxId = tasks.stream()
-                .mapToInt(t -> t.getId())
+                .mapToInt(Task::getId)
                 .max()
                 .orElse(0);
         int id = maxId + 1;
         LocalDateTime now = LocalDateTime.now();
         tasks.add(new Task(id, description, Status.TODO, now, now));
-        storage.save(tasks);
+        TaskStorage.save(tasks);
         return id;
     }
 
-    public List<Task> findAll() {
-        return storage.getAllTasks();
+    public static List<Task> findAll() {
+        return TaskStorage.getAllTasks();
     }
 
-    public boolean delete(int id) {
-        List<Task> tasks = storage.getAllTasks();
+    public static boolean delete(int id) {
+        List<Task> tasks = TaskStorage.getAllTasks();
         int index = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).getId() == id)
                 .findFirst()
@@ -42,12 +38,12 @@ public class TaskRepository {
         }
 
         tasks.remove(index);
-        storage.save(tasks);
+        TaskStorage.save(tasks);
         return true;
     }
 
-    public boolean setStatus(int id, Status status) {
-        List<Task> tasks = storage.getAllTasks();
+    public static boolean setStatus(int id, Status status) {
+        List<Task> tasks = TaskStorage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)
                 .findFirst();
@@ -57,12 +53,12 @@ public class TaskRepository {
         }
 
         task.get().setStatus(status);
-        storage.save(tasks);
+        TaskStorage.save(tasks);
         return true;
     }
 
-    public boolean setDescription(int id, String description) {
-        List<Task> tasks = storage.getAllTasks();
+    public static boolean setDescription(int id, String description) {
+        List<Task> tasks = TaskStorage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)
                 .findFirst();
@@ -72,7 +68,14 @@ public class TaskRepository {
         }
 
         task.get().setDescription(description);
-        storage.save(tasks);
+        TaskStorage.save(tasks);
         return true;
+    }
+
+    public static boolean existsById(int id) {
+        Optional<Task> task = findAll().stream()
+        .filter(t -> t.getId() == id)
+        .findFirst();
+        return task.isPresent();
     }
 }

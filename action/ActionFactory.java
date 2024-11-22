@@ -18,7 +18,7 @@ public final class ActionFactory {
     public static Action findAction(String actionType) {
         Supplier<Action> actionSupplier = actions.get(actionType);
         if (actionSupplier == null) {
-            throw new ActionNotFoundException();
+            throw new ActionNotFoundException("Action not found");
         }
         return actionSupplier.get();
     }

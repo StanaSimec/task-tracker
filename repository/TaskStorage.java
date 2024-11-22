@@ -12,19 +12,15 @@ class TaskStorage {
 
     private static final String FILE_NAME = "tasks.json";
 
-    private final TaskMapper mapper;
+    private TaskStorage(){}
 
-    TaskStorage() {
-        mapper = new TaskMapper();
-    }
-
-    List<Task> getAllTasks() {
+    static List<Task> getAllTasks() {
         String file = getFile();
-        return mapper.toTasks(file);
+        return TaskMapper.toTasks(file);
     }
 
-    void save(List<Task> tasks) {
-        String json = mapper.toJson(tasks);
+    static void save(List<Task> tasks) {
+        String json = TaskMapper.toJson(tasks);
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             writer.write(json);
         } catch (IOException e) {
@@ -32,7 +28,7 @@ class TaskStorage {
         }
     }
 
-    private String getFile() {
+    private static String getFile() {
         StringBuilder builder = new StringBuilder();
         try {
             Path path = Paths.get(FILE_NAME);

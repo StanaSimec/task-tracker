@@ -1,20 +1,15 @@
 package action;
 
-class DeleteAction extends Action {
+import repository.TaskRepository;
+import validation.IdValidator;
+
+public final class DeleteAction implements Action {
 
     @Override
-    boolean validateArguments(String[] args) {
-        if (args.length < 2) {
-            System.out.println("missing task id");
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    void handleAction(String[] args) {
+    public void execute(String[] args) {
+        IdValidator.validate(args);
         int id = Integer.parseInt(args[1]);
-        boolean isDeleted = repository.delete(id);
+        boolean isDeleted = TaskRepository.delete(id);
         System.out.println(isDeleted ? "Task deleted" : "Task not found");
     }
 }

@@ -5,8 +5,6 @@ import java.util.function.Supplier;
 
 public final class ActionFactory {
 
-    private ActionFactory(){}
-
     private static final Map<String, Supplier<Action>> actions = Map.of(
             "add", AddAction::new,
             "update", UpdateAction::new,
@@ -14,6 +12,9 @@ public final class ActionFactory {
             "list", ListAction::new,
             "mark-done", MarkDoneAction::new,
             "mark-in-progress", MarkInProgressAction::new);
+
+    private ActionFactory() {
+    }
 
     public static Action findAction(String actionType) {
         Supplier<Action> actionSupplier = actions.get(actionType);

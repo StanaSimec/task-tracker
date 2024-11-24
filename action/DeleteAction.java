@@ -1,6 +1,6 @@
 package action;
 
-import repository.TaskRepository;
+import model.TaskService;
 import validation.IdValidator;
 
 public final class DeleteAction implements Action {
@@ -9,7 +9,7 @@ public final class DeleteAction implements Action {
     public void execute(String[] args) {
         IdValidator.validate(args);
         int id = Integer.parseInt(args[1]);
-        boolean isDeleted = TaskRepository.delete(id);
+        boolean isDeleted = TaskService.delete(id);
         System.out.println(isDeleted ? "Task deleted" : "Task not found");
     }
 }

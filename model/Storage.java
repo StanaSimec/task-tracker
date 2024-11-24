@@ -1,4 +1,4 @@
-package repository;
+package model;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,19 +8,20 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
-class TaskStorage {
+class Storage {
 
     private static final String FILE_NAME = "tasks.json";
 
-    private TaskStorage(){}
+    private Storage() {
+    }
 
     static List<Task> getAllTasks() {
         String file = getFile();
-        return TaskMapper.toTasks(file);
+        return Mapper.toTasks(file);
     }
 
     static void save(List<Task> tasks) {
-        String json = TaskMapper.toJson(tasks);
+        String json = Mapper.toJson(tasks);
         try (FileWriter writer = new FileWriter(FILE_NAME)) {
             writer.write(json);
         } catch (IOException e) {

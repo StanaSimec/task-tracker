@@ -1,12 +1,12 @@
-package repository;
+package model;
 
 import java.time.LocalDateTime;
 
 public class Task {
     private final int id;
+    private final LocalDateTime createdAt;
     private String description;
     private Status status;
-    private final LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public Task(int id, String description, Status status, LocalDateTime createdAt, LocalDateTime updatedAt) {

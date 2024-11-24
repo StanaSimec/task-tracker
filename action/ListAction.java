@@ -1,19 +1,19 @@
 package action;
 
+import model.Status;
+import model.Task;
+import model.TaskService;
+import validation.ValidationException;
+
 import java.util.List;
 import java.util.Optional;
-
-import repository.Status;
-import repository.Task;
-import repository.TaskRepository;
-import validation.ValidationException;
 
 public final class ListAction implements Action {
 
     @Override
     public void execute(String[] args) {
         String format = "id: %d, description: %s, status: %s, created at: %s, updated at: %s";
-        List<Task> tasks = TaskRepository.findAll();
+        List<Task> tasks = TaskService.findAll();
 
         if (args.length >= 2) {
             Optional<Status> status = Status.fromName(args[1]);

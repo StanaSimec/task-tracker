@@ -1,10 +1,11 @@
 package validation;
 
-import repository.TaskRepository;
+import model.TaskService;
 
 public class IdValidator {
 
-    private IdValidator(){}
+    private IdValidator() {
+    }
 
     public static void validate(String[] args) {
         if (args.length < 2) {
@@ -16,7 +17,7 @@ public class IdValidator {
         } catch (NumberFormatException e) {
             throw new ValidationException("Invalid task id");
         }
-        if (!TaskRepository.existsById(id)) {
+        if (!TaskService.existsById(id)) {
             throw new ValidationException("Task not found");
         }
     }

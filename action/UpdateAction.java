@@ -1,6 +1,6 @@
 package action;
 
-import repository.TaskRepository;
+import model.TaskService;
 import validation.IdValidator;
 import validation.ValidationException;
 
@@ -15,7 +15,7 @@ public final class UpdateAction implements Action {
 
         int id = Integer.parseInt(args[1]);
         String description = args[2];
-        boolean isUpdated = TaskRepository.setDescription(id, description);
+        boolean isUpdated = TaskService.setDescription(id, description);
         System.out.println(isUpdated ? "Task updated" : "Task not found");
     }
 }

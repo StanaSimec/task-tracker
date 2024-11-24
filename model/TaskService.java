@@ -1,16 +1,17 @@
-package repository;
+package model;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-public class TaskRepository {
+public class TaskService {
 
-    private TaskRepository(){}
+    private TaskService() {
+    }
 
     public static int add(String description) {
-        List<Task> tasks = TaskStorage.getAllTasks();
+        List<Task> tasks = Storage.getAllTasks();
         int maxId = tasks.stream()
                 .mapToInt(Task::getId)
                 .max()
@@ -18,16 +19,16 @@ public class TaskRepository {
         int id = maxId + 1;
         LocalDateTime now = LocalDateTime.now();
         tasks.add(new Task(id, description, Status.TODO, now, now));
-        TaskStorage.save(tasks);
+        Storage.save(tasks);
         return id;
     }
 
     public static List<Task> findAll() {
-        return TaskStorage.getAllTasks();
+        return Storage.getAllTasks();
     }
 
     public static boolean delete(int id) {
-        List<Task> tasks = TaskStorage.getAllTasks();
+        List<Task> tasks = Storage.getAllTasks();
         int index = IntStream.range(0, tasks.size())
                 .filter(i -> tasks.get(i).getId() == id)
                 .findFirst()
@@ -38,12 +39,12 @@ public class TaskRepository {
         }
 
         tasks.remove(index);
-        TaskStorage.save(tasks);
+        Storage.save(tasks);
         return true;
     }
 
     public static boolean setStatus(int id, Status status) {
-        List<Task> tasks = TaskStorage.getAllTasks();
+        List<Task> tasks = Storage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)
                 .findFirst();
@@ -53,12 +54,13 @@ public class TaskRepository {
         }
 
         task.get().setStatus(status);
-        TaskStorage.save(tasks);
+        task.get().setUpdatedAt(LocalDateTime.now());
+        Storage.save(tasks);
         return true;
     }
 
     public static boolean setDescription(int id, String description) {
-        List<Task> tasks = TaskStorage.getAllTasks();
+        List<Task> tasks = Storage.getAllTasks();
         Optional<Task> task = tasks.stream()
                 .filter(t -> t.getId() == id)
                 .findFirst();
@@ -68,14 +70,15 @@ public class TaskRepository {
         }
 
         task.get().setDescription(description);
-        TaskStorage.save(tasks);
+        task.get().setUpdatedAt(LocalDateTime.now());
+        Storage.save(tasks);
         return true;
     }
 
     public static boolean existsById(int id) {
         Optional<Task> task = findAll().stream()
-        .filter(t -> t.getId() == id)
-        .findFirst();
+                .filter(t -> t.getId() == id)
+                .findFirst();
         return task.isPresent();
     }
 }

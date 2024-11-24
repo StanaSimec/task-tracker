@@ -1,7 +1,7 @@
 package action;
 
-import repository.Status;
-import repository.TaskRepository;
+import model.Status;
+import model.TaskService;
 import validation.IdValidator;
 
 public final class MarkDoneAction implements Action {
@@ -10,7 +10,7 @@ public final class MarkDoneAction implements Action {
     public void execute(String[] args) {
         IdValidator.validate(args);
         int id = Integer.parseInt(args[1]);
-        boolean isUpdated = TaskRepository.setStatus(id, Status.DONE);
+        boolean isUpdated = TaskService.setStatus(id, Status.DONE);
         System.out.println(isUpdated ? "Task updated" : "Task not found");
     }
 }

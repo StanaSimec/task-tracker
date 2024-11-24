@@ -1,6 +1,6 @@
 package action;
 
-import repository.TaskRepository;
+import model.TaskService;
 import validation.ValidationException;
 
 public final class AddAction implements Action {
@@ -10,7 +10,7 @@ public final class AddAction implements Action {
         if (args.length < 2) {
             throw new ValidationException("Task description is not provided");
         }
-        int taskId = TaskRepository.add(args[1]);
+        int taskId = TaskService.add(args[1]);
         System.out.println("Created task with id: " + taskId);
     }
 }

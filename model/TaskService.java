@@ -10,7 +10,7 @@ public class TaskService {
     private TaskService() {
     }
 
-    public static int add(String description) {
+    public static Optional<Integer> add(String description) {
         List<Task> tasks = Storage.getAllTasks();
         int maxId = tasks.stream()
                 .mapToInt(Task::getId)
@@ -19,8 +19,11 @@ public class TaskService {
         int id = maxId + 1;
         LocalDateTime now = LocalDateTime.now();
         tasks.add(new Task(id, description, Status.TODO, now, now));
-        Storage.save(tasks);
-        return id;
+        boolean isSaved = Storage.save(tasks);
+        if (isSaved) {
+            return Optional.of(id);
+        }
+        return Optional.empty();
     }
 
     public static List<Task> findAll() {
@@ -39,8 +42,7 @@ public class TaskService {
         }
 
         tasks.remove(index);
-        Storage.save(tasks);
-        return true;
+        return Storage.save(tasks);
     }
 
     public static boolean setStatus(int id, Status status) {
@@ -55,8 +57,7 @@ public class TaskService {
 
         task.get().setStatus(status);
         task.get().setUpdatedAt(LocalDateTime.now());
-        Storage.save(tasks);
-        return true;
+        return Storage.save(tasks);
     }
 
     public static boolean setDescription(int id, String description) {
@@ -71,8 +72,7 @@ public class TaskService {
 
         task.get().setDescription(description);
         task.get().setUpdatedAt(LocalDateTime.now());
-        Storage.save(tasks);
-        return true;
+        return Storage.save(tasks);
     }
 
     public static boolean existsById(int id) {

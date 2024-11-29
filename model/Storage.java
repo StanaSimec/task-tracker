@@ -39,7 +39,7 @@ class Storage {
             }
             scanner.close();
         } catch (InvalidPathException | IOException e) {
-            e.printStackTrace();
+            return "";
         }
         return builder.toString();
     }

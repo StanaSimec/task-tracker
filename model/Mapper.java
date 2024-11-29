@@ -47,6 +47,9 @@ class Mapper {
     }
 
     static List<Task> toTasks(String json) {
+        if (json.isEmpty()) {
+            return new ArrayList<>();
+        }
         Pattern allTasksPattern = Pattern.compile(".+\\[(.*)\\].+");
         Matcher allTasksMatcher = allTasksPattern.matcher(json);
 

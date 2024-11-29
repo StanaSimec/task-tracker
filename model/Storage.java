@@ -37,7 +37,6 @@ class Storage {
                 builder.append(scanner.nextLine());
             }
         } catch (InvalidPathException | IOException e) {
-            e.printStackTrace();
             return "";
         }
         return builder.toString();

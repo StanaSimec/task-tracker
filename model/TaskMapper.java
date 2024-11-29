@@ -34,7 +34,7 @@ class TaskMapper {
         if (json.isEmpty()) {
             return new ArrayList<>();
         }
-        Pattern allTasksPattern = Pattern.compile(".+\\[(.*)\\].+");
+        Pattern allTasksPattern = Pattern.compile(".+\\[(.*)].+");
         Matcher allTasksMatcher = allTasksPattern.matcher(json);
 
         if (!allTasksMatcher.find() || allTasksMatcher.groupCount() != 1) {
@@ -42,7 +42,7 @@ class TaskMapper {
         }
 
         String jsons = allTasksMatcher.group(1);
-        String tasksDelimiter = "\\}, \\{";
+        String tasksDelimiter = "}, \\{";
         String[] tasksData = jsons.split(tasksDelimiter);
         List<Task> tasks = new ArrayList<>();
         for (String taskData : tasksData) {

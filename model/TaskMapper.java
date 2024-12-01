@@ -15,7 +15,11 @@ class TaskMapper {
 
     private static Optional<Task> toTask(String json) {
         Pattern pattern = Pattern.compile(
-                "\"id\": (.+), \"description\": \"(.+)\", \"status\": \"(.+)\", \"createdAt\": \"(.+)\", \"updatedAt\": \"(.+)\"");
+                "\"id\":(.+)," +
+                        "\"description\":\"(.+)\"," +
+                        "\"status\":\"(.+)\"," +
+                        "\"createdAt\":\"(.+)\"," +
+                        "\"updatedAt\":\"(.+)\"");
         Matcher matcher = pattern.matcher(json);
 
         if (!matcher.find() || matcher.groupCount() != 5) {
@@ -34,15 +38,18 @@ class TaskMapper {
         if (json.isEmpty()) {
             return new ArrayList<>();
         }
+
+        String jsonWithoutWhitespaces = json.replaceAll("\\s", "");
+
         Pattern allTasksPattern = Pattern.compile(".+\\[(.*)].+");
-        Matcher allTasksMatcher = allTasksPattern.matcher(json);
+        Matcher allTasksMatcher = allTasksPattern.matcher(jsonWithoutWhitespaces);
 
         if (!allTasksMatcher.find() || allTasksMatcher.groupCount() != 1) {
             return List.of();
         }
 
         String jsons = allTasksMatcher.group(1);
-        String tasksDelimiter = "}, \\{";
+        String tasksDelimiter = "},\\{";
         String[] tasksData = jsons.split(tasksDelimiter);
         List<Task> tasks = new ArrayList<>();
         for (String taskData : tasksData) {

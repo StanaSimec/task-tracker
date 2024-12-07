@@ -9,11 +9,15 @@ public class JSONMapper {
     }
 
     private static String toJson(Task task) {
-        String jsonFormat = "{\"id\":%d," +
-                "\"description\":\"%s\"," +
-                "\"status\": \"%s\"," +
-                "\"createdAt\": \"%s\"," +
-                "\"updatedAt\": \"%s\"}";
+        String jsonFormat = """
+                            {
+                                "id": %d,
+                                "description": "%s",
+                                "status": "%s",
+                                "createdAt": "%s",
+                                "updatedAt": "%s"
+                            }
+                            """;
         return String.format(jsonFormat, task.getId(), task.getDescription(), task.getStatus().value,
                 task.getCreatedAt(),
                 task.getUpdatedAt());
@@ -24,7 +28,13 @@ public class JSONMapper {
         for (Task task : tasks) {
             jsons.add(toJson(task));
         }
-        String tasksJson = "{\"tasks\":[%s]}";
-        return String.format(tasksJson, String.join(", ", jsons));
+        String tasksJson = """
+                           {
+                            "tasks": [
+                                %s
+                            ]
+                           }
+                           """;
+        return String.format(tasksJson, String.join(",", jsons));
     }
 }
